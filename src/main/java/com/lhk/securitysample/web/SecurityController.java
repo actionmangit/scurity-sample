@@ -40,4 +40,14 @@ public class SecurityController {
 
         return "private";
     }
+
+    @GetMapping(value = "/admin")
+    public String adminPage() {
+        return "admin";
+    }
+
+    @GetMapping(value = "/access_denied")
+    public String adminDeniedPage() {
+        return "access_denied";
+    }
 }

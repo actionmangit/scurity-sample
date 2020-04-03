@@ -38,8 +38,17 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("유저를 찾을 수 없습니다.");
         }
 
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        GrantedAuthority role = new SimpleGrantedAuthority("ROLE_USER");
+        authorities.add(role);
+
+        if (s.equals("admin")) {
+            GrantedAuthority adminRole = new SimpleGrantedAuthority("ROLE_ADMIN");
+            authorities.add(adminRole);
+        }
+
         return new User(findUsers.get(0).getUsername(), 
                         findUsers.get(0).getPassword(), 
-                        Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
+                        authorities);
     }
 }

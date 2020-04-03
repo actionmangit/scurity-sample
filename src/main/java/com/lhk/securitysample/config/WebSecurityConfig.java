@@ -1,5 +1,6 @@
 package com.lhk.securitysample.config;
 
+import com.lhk.securitysample.config.handler.CustomAccessDeniedHandler;
 import com.lhk.securitysample.service.UserDetailServiceImpl;
 
 import org.springframework.context.annotation.Bean;
@@ -18,9 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsService userDetailsService;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public WebSecurityConfig(UserDetailServiceImpl userDetailsServiceImpl) {
+    public WebSecurityConfig(UserDetailServiceImpl userDetailsServiceImpl, 
+            CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.userDetailsService = userDetailsServiceImpl;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     @Override
@@ -58,9 +62,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
                 .loginPage("/login")
                 .usernameParameter("name")
-                .passwordParameter("pw").and()
+                .passwordParameter("pw")
+                .failureUrl("/login?error=true").and()
+            .logout()
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true).and()
+            .exceptionHandling()
+                //.accessDeniedPage("/access_denied").and()
+                .accessDeniedHandler(customAccessDeniedHandler).and()
             .authorizeRequests()
                 .antMatchers("/private/**").hasAnyRole("USER")
+                .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().permitAll();
         // @fommatter:on
     }
