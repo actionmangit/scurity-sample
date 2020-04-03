@@ -1,8 +1,11 @@
 package com.lhk.securitysample.web;
 
+import java.security.Principal;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +24,10 @@ public class SecurityController {
         return "private";
     }
 
-    @GetMapping(value = "/public")
-    public String publicPage() {
-        return "public";
+    @GetMapping(value = "/private")
+    public String privatePage(Principal principal, Model model) {
+        model.addAttribute("user", principal);
+        return "private";
     }
 
     @GetMapping(value = "/login")
