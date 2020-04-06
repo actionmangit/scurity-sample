@@ -19,10 +19,10 @@ public class SecurityController {
         return "index";
     }
 
-    @GetMapping(value = "/private")
-    public String privatgePage() {
-        return "private";
-    }
+    // @GetMapping(value = "/private")
+    // public String privatgePage() {
+    //     return "private";
+    // }
 
     @GetMapping(value = "/private")
     public String privatePage(Principal principal, Model model) {

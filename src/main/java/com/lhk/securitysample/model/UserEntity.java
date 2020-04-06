@@ -1,6 +1,8 @@
 package com.lhk.securitysample.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -26,4 +28,7 @@ public final class UserEntity {
     private String username;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private SocialProvider sns;
 }

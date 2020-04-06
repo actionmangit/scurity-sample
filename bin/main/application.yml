@@ -18,6 +18,6 @@ spring:
     oauth2:
       client:
         registration:
-          facebook:
-            client-id: 
-            client-secret: 
+          github:
+            client-id: c7ed09f6a00551255031
+            client-secret: f3635a74b98836d7007ca848331a9efc4fbc53de
