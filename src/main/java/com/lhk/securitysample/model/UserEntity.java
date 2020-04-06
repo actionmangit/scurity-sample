@@ -1,5 +1,7 @@
 package com.lhk.securitysample.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,8 +18,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tbl_users")
 @Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public final class UserEntity {
 
@@ -31,4 +33,6 @@ public final class UserEntity {
 
     @Enumerated(EnumType.STRING)
     private SocialProvider sns;
+
+    private LocalDateTime lastLogin;
 }

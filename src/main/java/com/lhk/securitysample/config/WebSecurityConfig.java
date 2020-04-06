@@ -1,6 +1,7 @@
 package com.lhk.securitysample.config;
 
 import com.lhk.securitysample.config.handler.CustomAccessDeniedHandler;
+import com.lhk.securitysample.config.handler.LoginSuccessHandler;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -69,11 +71,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .headers(header -> header
                 .frameOptions().disable()
             )
+            .sessionManagement(session -> session
+                .maximumSessions(1)
+                .expiredUrl("/login?expire=true")
+            )
+            .rememberMe(rememberMe -> rememberMe
+                .alwaysRemember(false)
+                .rememberMeParameter("remember-me")
+            )
             .formLogin(fromLogin -> fromLogin
                 .loginPage("/login")
                 .usernameParameter("name")
                 .passwordParameter("pw")
                 .failureUrl("/login?error=true")
+                .successHandler(loginSuccessHandler)
             )
             .logout(logout -> logout
                 .deleteCookies("JSESSIONID")
@@ -84,7 +95,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(customAccessDeniedHandler)
                 //.accessDeniedPage("/access_denied")
             )
-            .oauth2Login();
+            .oauth2Login(oauth2 -> oauth2
+                .successHandler(loginSuccessHandler)
+            );
         // @fommatter:on
     }
 
