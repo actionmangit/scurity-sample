@@ -33,7 +33,7 @@ public class RootFilter implements Filter {
                 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Auth =>>> ");
-        log.info(authentication.toString());
+        //log.info(authentication.toString());
         chain.doFilter(request, response);
     }
 

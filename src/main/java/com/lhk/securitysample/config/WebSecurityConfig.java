@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 
-@Configuration
-@EnableWebSecurity
+// @Configuration
+// @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -57,10 +57,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // @fommatter:off
         http
+            .requestMatchers(matchers -> matchers
+                .mvcMatchers("/login/**", "/logout/**", "/private/**", "/admin/**", "/", "/profile/**", "/my-login", "/oauth2/**", "/oauth/**")
+            )
             .authorizeRequests(authorizeRequests -> authorizeRequests
                 .antMatchers("/private/**").hasAnyRole("USER")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                .anyRequest().permitAll()
+                //.anyRequest().permitAll()
             )
             // .csrf(csrf -> csrf
             //     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -94,8 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling(e -> e
                 .accessDeniedHandler(customAccessDeniedHandler)
                 //.accessDeniedPage("/access_denied")
-            )
-            .oauth2Login(oauth2 -> oauth2
+            ).oauth2Login(oauth2 -> oauth2
                 .successHandler(loginSuccessHandler)
             );
         // @fommatter:on
